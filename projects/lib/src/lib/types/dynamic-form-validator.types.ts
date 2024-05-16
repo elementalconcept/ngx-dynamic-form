@@ -47,6 +47,16 @@ export interface DynamicFormValidatorEqualTo {
   field: string;
 }
 
+export interface DynamicFormValidatorLessThen {
+  type: 'lessThen';
+  field: string;
+}
+
+export interface DynamicFormValidatorMoreThen {
+  type: 'moreThen';
+  field: string;
+}
+
 export type DynamicFormValidator =
   | DynamicFormValidatorMin
   | DynamicFormValidatorMinLength
@@ -57,4 +67,6 @@ export type DynamicFormValidator =
   | DynamicFormValidatorEmail
   | DynamicFormValidatorPattern
   | DynamicFormValidatorPatternList
-  | DynamicFormValidatorEqualTo;
+  | DynamicFormValidatorEqualTo
+  | DynamicFormValidatorLessThen
+  | DynamicFormValidatorMoreThen;
