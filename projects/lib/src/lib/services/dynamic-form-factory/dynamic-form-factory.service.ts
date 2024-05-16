@@ -113,6 +113,12 @@ export class DynamicFormFactoryService {
       case 'equalTo':
         return DynamicFormValidators.equalTo(validator.field);
 
+      case 'moreThanDate':
+        return DynamicFormValidators.moreThanDate(validator.field);
+
+      case 'lessThanDate':
+        return DynamicFormValidators.lessThanDate(validator.field);
+
       default:
         return null;
     }
