@@ -47,13 +47,13 @@ export interface DynamicFormValidatorEqualTo {
   field: string;
 }
 
-export interface DynamicFormValidatorLessThen {
-  type: 'lessThen';
+export interface DynamicFormValidatorLessThenDate {
+  type: 'lessThenDate';
   field: string;
 }
 
-export interface DynamicFormValidatorMoreThen {
-  type: 'moreThen';
+export interface DynamicFormValidatorMoreThenDate {
+  type: 'moreThenDate';
   field: string;
 }
 
@@ -68,5 +68,5 @@ export type DynamicFormValidator =
   | DynamicFormValidatorPattern
   | DynamicFormValidatorPatternList
   | DynamicFormValidatorEqualTo
-  | DynamicFormValidatorLessThen
-  | DynamicFormValidatorMoreThen;
+  | DynamicFormValidatorLessThenDate
+  | DynamicFormValidatorMoreThenDate;
