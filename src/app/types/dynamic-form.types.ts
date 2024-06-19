@@ -11,7 +11,8 @@ export interface FormValue {
   misc: string;
 }
 
-export const customConfig: DynamicFormConfig<InputMetaDefault, FormValue> = {
+export const customConfig = (textTransformer: (key: string) => string): DynamicFormConfig<InputMetaDefault, FormValue> => ({
+  textTransformer,
   elements: [
     {
       id: 'firstName',
@@ -46,7 +47,7 @@ export const customConfig: DynamicFormConfig<InputMetaDefault, FormValue> = {
       ]
     }
   ]
-};
+});
 
 export const customValue: FormValue = {
   firstName: 'Me',
