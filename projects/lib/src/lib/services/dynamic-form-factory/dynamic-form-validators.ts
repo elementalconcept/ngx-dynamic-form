@@ -30,8 +30,8 @@ export class DynamicFormValidators {
         const regex = new RegExp(pattern.pattern);
         const valid = regex.test(control.value);
 
-        if (!valid) {
-          acc[pattern.errorCode] = true;
+        if (!valid && pattern.errorLabel) {
+          acc[pattern.errorLabel] = true;
         }
 
         return acc;
@@ -40,6 +40,48 @@ export class DynamicFormValidators {
       // if true, return no error (no error), else return error passed in the second parameter
       if (Object.keys(results).length > 0) {
         return results;
+      }
+
+      return null;
+    };
+  }
+
+  static moreThanDate(field: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.parent?.controls?.hasOwnProperty(field)) {
+        const related = control.parent.controls[field];
+
+        if (!related.value || !control.value) {
+          return null;
+        }
+
+        const relatedNumber = new Date(related.value).getTime();
+        const controlNumber = new Date(control.value).getTime();
+
+        if (relatedNumber > controlNumber) {
+          return { moreThanDate: true };
+        }
+      }
+
+      return null;
+    };
+  }
+
+  static lessThanDate(field: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.parent?.controls?.hasOwnProperty(field)) {
+        const related = control.parent.controls[field];
+
+        if (!related.value || !control.value) {
+          return null;
+        }
+
+        const relatedNumber = new Date(related.value).getTime();
+        const controlNumber = new Date(control.value).getTime();
+
+        if (relatedNumber < controlNumber) {
+          return { lessThanDate: true };
+        }
       }
 
       return null;

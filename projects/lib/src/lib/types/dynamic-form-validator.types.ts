@@ -33,7 +33,8 @@ export interface DynamicFormValidatorMaxLength {
 export interface DynamicFormValidatorPattern {
   type: 'pattern';
   pattern: string;
-  errorCode: string;
+
+  errorLabel?: string;
 }
 
 export interface DynamicFormValidatorPatternList {
@@ -43,6 +44,16 @@ export interface DynamicFormValidatorPatternList {
 
 export interface DynamicFormValidatorEqualTo {
   type: 'equalTo';
+  field: string;
+}
+
+export interface DynamicFormValidatorMoreThanDate {
+  type: 'moreThanDate';
+  field: string;
+}
+
+export interface DynamicFormValidatorLessThanDate {
+  type: 'lessThanDate';
   field: string;
 }
 
@@ -56,4 +67,6 @@ export type DynamicFormValidator =
   | DynamicFormValidatorEmail
   | DynamicFormValidatorPattern
   | DynamicFormValidatorPatternList
-  | DynamicFormValidatorEqualTo;
+  | DynamicFormValidatorEqualTo
+  | DynamicFormValidatorMoreThanDate
+  | DynamicFormValidatorLessThanDate;
