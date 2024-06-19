@@ -38,11 +38,11 @@ export class DynamicFormComponent<M, V> implements OnInit {
 
   formReady: boolean;
 
-  private readonly config$ = new ReplaySubject<DynamicFormConfig<M>>(1);
+  private readonly config$ = new ReplaySubject<DynamicFormConfig<M, V>>(1);
 
   private readonly value$ = new ReplaySubject<V>(1);
 
-  private readonly componentMap$ = new ReplaySubject<DynamicFormComponentMap<M>>(1);
+  private readonly componentMap$ = new ReplaySubject<DynamicFormComponentMap<M, V>>(1);
 
   private readonly dynamicForm$ = new ReplaySubject<DynamicForm<M, V>>(1);
 
@@ -54,7 +54,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
 
   constructor(
     private readonly dynamicFormFactory: DynamicFormFactoryService,
-    @Inject(DYNAMIC_FORM_COMPONENT_MAP) componentMap: DynamicFormComponentMap<M>
+    @Inject(DYNAMIC_FORM_COMPONENT_MAP) componentMap: DynamicFormComponentMap<M, V>
   ) {
     this.componentMap$.next(componentMap);
   }
@@ -65,7 +65,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
   }
 
   @Input()
-  set config(config: DynamicFormConfig<M>) {
+  set config(config: DynamicFormConfig<M, V>) {
     this.config$.next(config);
   }
 
@@ -75,7 +75,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
   }
 
   @Input()
-  set componentMap(componentMap: DynamicFormComponentMap<M>) {
+  set componentMap(componentMap: DynamicFormComponentMap<M, V>) {
     this.componentMap$.next(componentMap);
   }
 
@@ -101,7 +101,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
         switchMap(config =>
           combineLatest([ this.value$, this.componentMap$ ])
             .pipe(map(([ value, componentMap ]) =>
-              [ config, value, componentMap ] as [ DynamicFormConfig<M>, V, DynamicFormComponentMap<M> ]
+              [ config, value, componentMap ] as [ DynamicFormConfig<M, V>, V, DynamicFormComponentMap<M, V> ]
             ))
         ),
         tap(() => this.valueChangesSub instanceof Object ? this.valueChangesSub.unsubscribe() : noop()),
@@ -136,7 +136,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
   onSubmit = () => this.formSubmit.emit({ formGroup: this.formGroup, value: this.formGroup.value as V });
 
   private createForm = (
-    [ config, value, componentMap ]: [ DynamicFormConfig<M>, V, DynamicFormComponentMap<M> ]
+    [ config, value, componentMap ]: [ DynamicFormConfig<M, V>, V, DynamicFormComponentMap<M, V> ]
   ) => {
     const dynamicForm = this.dynamicFormFactory.createForm(config, value, componentMap);
     this.formGroup = dynamicForm.formGroup;
@@ -188,7 +188,7 @@ export class DynamicFormComponent<M, V> implements OnInit {
       );
   };
 
-  private isComponentVisible = (dynamicForm: DynamicForm<M, V>, item: DynamicFormComponentDescriptor<M>) =>
+  private isComponentVisible = (dynamicForm: DynamicForm<M, V>, item: DynamicFormComponentDescriptor<M, V>) =>
     item.config.dependsOn!.reduce(this.checkDependency(dynamicForm), true);
 
   private checkDependency =

@@ -77,7 +77,7 @@ export class DynamicFormFactoryService {
 
     formGroup.addControl(
       element.id,
-      this.createFormControl(value[element.id], validators, element.disabled ?? false, element.updateOn)
+      this.createFormControl(value[element.id], validators, element.disabled === true, element.updateOn)
     );
   };
 
