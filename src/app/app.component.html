@@ -5,17 +5,20 @@
 <h3>Dynamic Form plain html components</h3>
 
 <div class="wrapper">
-  <dynamic-form [config]="customConfig"
+  <dynamic-form *ngIf="customConfig"
+                [config]="customConfig"
                 [value]="customValue"
                 [componentMap]="customComponentMap"
                 (statusChanges)="onCustomVStatusChanges($event)"
                 (valueChanges)="onCustomValueChanges($event)"
                 class="simple-form">
+
+
   </dynamic-form>
 
   <div class="results">
     <p>Result</p>
-    <pre>{{ customStatus }}</pre>
+    <pre *ngIf="customStatus">{{ customStatus }}</pre>
     <pre>{{ customFormValue | json }}</pre>
   </div>
 </div>

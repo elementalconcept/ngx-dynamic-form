@@ -45,4 +45,46 @@ export class DynamicFormValidators {
       return null;
     };
   }
+
+  static moreThanDate(field: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.parent?.controls?.hasOwnProperty(field)) {
+        const related = control.parent.controls[field];
+
+        if (!related.value || !control.value) {
+          return null;
+        }
+
+        const relatedNumber = new Date(related.value).getTime();
+        const controlNumber = new Date(control.value).getTime();
+
+        if (relatedNumber > controlNumber) {
+          return { moreThanDate: true };
+        }
+      }
+
+      return null;
+    };
+  }
+
+  static lessThanDate(field: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.parent?.controls?.hasOwnProperty(field)) {
+        const related = control.parent.controls[field];
+
+        if (!related.value || !control.value) {
+          return null;
+        }
+
+        const relatedNumber = new Date(related.value).getTime();
+        const controlNumber = new Date(control.value).getTime();
+
+        if (relatedNumber < controlNumber) {
+          return { lessThanDate: true };
+        }
+      }
+
+      return null;
+    };
+  }
 }

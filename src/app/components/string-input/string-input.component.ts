@@ -3,17 +3,18 @@ import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 
 import { DynamicFormElement, DynamicFormPassThroughControl } from '@elemental-concept/dynamic-form';
 
-import { inputModeMap } from '../../types';
+import { FormValue, inputModeMap } from '../../types';
+import { InputMetaDefault } from '../../../../projects/lib/src/lib/types';
 
 @Component({
   selector: 'app-string-input',
   templateUrl: './string-input.component.html',
   styleUrls: [ './string-input.component.scss' ]
 })
-export class StringInputComponent implements DynamicFormPassThroughControl<unknown> {
+export class StringInputComponent implements DynamicFormPassThroughControl<InputMetaDefault, FormValue> {
   readonly type = 'passthrough';
 
-  config: DynamicFormElement<unknown>;
+  config: DynamicFormElement<InputMetaDefault, FormValue>;
 
   inputMode = 'text';
 
@@ -25,7 +26,9 @@ export class StringInputComponent implements DynamicFormPassThroughControl<unkno
 
   visible = true;
 
-  set dynamicFormElement(element: DynamicFormElement<unknown>) {
+  textTransformer?: (message: string) => string;
+
+  set dynamicFormElement(element: DynamicFormElement<InputMetaDefault, FormValue>) {
     this.config = element;
 
     if (this.config.type in inputModeMap) {
@@ -38,4 +41,11 @@ export class StringInputComponent implements DynamicFormPassThroughControl<unkno
   showControl = () => this.visible = true;
 
   hideControl = () => this.visible = false;
+
+  transform = (key: string | undefined): string =>
+    key === undefined
+      ? ''
+      : this.textTransformer === undefined
+        ? key
+        : this.textTransformer(key);
 }

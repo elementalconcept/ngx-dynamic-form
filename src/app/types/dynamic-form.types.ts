@@ -1,6 +1,7 @@
 import { DynamicFormComponentMap, DynamicFormConfig } from '@elemental-concept/dynamic-form';
 
 import { StringInputComponent } from '../components';
+import { InputMetaDefault } from '../../../projects/lib/src/lib/types';
 
 export interface FormValue {
   firstName: string;
@@ -10,7 +11,8 @@ export interface FormValue {
   misc: string;
 }
 
-export const customConfig: DynamicFormConfig<FormValue> = {
+export const customConfig = (textTransformer: (key: string) => string): DynamicFormConfig<InputMetaDefault, FormValue> => ({
+  textTransformer,
   elements: [
     {
       id: 'firstName',
@@ -45,7 +47,7 @@ export const customConfig: DynamicFormConfig<FormValue> = {
       ]
     }
   ]
-};
+});
 
 export const customValue: FormValue = {
   firstName: 'Me',
@@ -55,7 +57,7 @@ export const customValue: FormValue = {
   misc: ''
 };
 
-export const customComponentMap: DynamicFormComponentMap<unknown> = {
+export const customComponentMap: DynamicFormComponentMap<InputMetaDefault, any> = {
   string: StringInputComponent,
   number: StringInputComponent,
   email: StringInputComponent,

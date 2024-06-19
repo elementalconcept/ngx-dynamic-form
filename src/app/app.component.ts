@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { DynamicFormComponentStatus, DynamicFormComponentValue } from '@elemental-concept/dynamic-form';
 
 import { customComponentMap, customConfig, customValue, FormValue } from './types';
+import { TranslationHelperService } from './translation-helper.service';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +11,21 @@ import { customComponentMap, customConfig, customValue, FormValue } from './type
   styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent {
-  customConfig = customConfig;
+  // set config
+  customConfig = customConfig(this.translationHelperService.textTransformer);
 
   customValue = customValue;
+
   customComponentMap = customComponentMap;
-  customStatus: string;
+
+  customStatus = 'INVALID';
+
   customFormValue: FormValue = customValue;
 
-  constructor() {
+  constructor(private readonly translationHelperService: TranslationHelperService) {
   }
 
-  onCustomVStatusChanges = (data: DynamicFormComponentStatus) => this.customStatus = data.status;
+  onCustomVStatusChanges = (data: DynamicFormComponentStatus<FormValue>) => this.customStatus = data.status;
 
-  onCustomValueChanges = (data: DynamicFormComponentValue) => this.customFormValue = data.value as FormValue;
+  onCustomValueChanges = (data: DynamicFormComponentValue<FormValue>) => this.customFormValue = data.value as FormValue;
 }
